@@ -2,61 +2,85 @@
 <html>
 <head>
 <meta charset='utf-8' />
-<title>Chicago Pothole Tracking</title>
+<title>Swipe between maps</title>
 <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js'></script>
+<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-compare/v0.1.0/mapbox-gl-compare.css' type='text/css' />
 <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.css' rel='stylesheet' />
-<link href="index.css" rel='stylesheet' />
-<style>
-body { margin:0; padding:0; }
-#map { position:absolute; top:0; bottom:0; width:100%; }
-</style>
+<link href='index.css' rel='stylesheet' />
 </head>
-<body>
- 
-<div id='map'></div>
-
-<div id='console'>
-    <h1>Chicago Potholes</h1>
-    <p>Data: <a href='https://data.cityofchicago.org/Service-Requests/Pothole-tracker/gvyr-59wm'>Chicago Pothole Data (2015-Present)</p>
+<body> 
+<div id='before' class='map'></div>
+<div id='after' class='map'></div>
+<div id='legend'>
+    <h1>HELLO!</h1>
 </div>
-<nav id='filter-group' class='filter-group'></nav>
- 
+
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js'></script>
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-compare/v0.1.0/mapbox-gl-compare.js'></script>
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoianVzdGluY29obGVyIiwiYSI6ImNqdmg0NXhyYjBlbGozeWxnZjl0bXJyZDIifQ.xJuUv_hfGodm7RKqtJr0EA';
-var map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/mapbox/light-v10',
-    zoom: 12,
-    center: [-87.6, 41.8]
+
+var beforeMap = new mapboxgl.Map({
+container: 'before',
+style: 'mapbox://styles/mapbox/light-v10',
+zoom: 12,
+center: [-87.6, 41.8]
 });
  
-map.on('load', function () {
+var afterMap = new mapboxgl.Map({
+container: 'after',
+style: 'mapbox://styles/mapbox/light-v10',
+zoom: 12,
+center: [-87.6, 41.8]
+});
  
-    map.addLayer({
-        'id': 'justincohler.3ivi0ruc',
-        'type': 'circle',
-        'source': {
-                    type: 'vector',
-                    url: 'mapbox://justincohler.3ivi0ruc'
-        },
-        'source-layer': 'potholes-69cgjl',
-        'paint': {
-            // make circles larger as the user zooms from z12 to z22
-            'circle-radius': {
+var map = new mapboxgl.Compare(beforeMap, afterMap, {
+// Set this to enable comparing two maps by mouse movement:
+// mousemove: true
+});
+
+beforeMap.on('load', () => { 
+ beforeMap.addLayer({
+     'id': '2014',
+     'type': 'circle',
+     'source': {
+                 type: 'vector',
+                 url: 'mapbox://justincohler.b6zdz1od'
+     },
+     'source-layer': 'potholes2014-8tdwse',
+     'paint': {
+         // make circles larger as the user zooms from z12 to z22
+        'circle-radius': {
             'base': 1.75,
             'stops': [[12, 2], [22, 180]]
         },
         // color circles by ethnicity, using a match expression
         // https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-match
-        'circle-color': [
-            'match',
-            ['get', 'status'],
-            'Completed', '#fbb03b',
-            /* other */ '#00ffff'
-            ]
-        }
-    });
+        'circle-color': '#fbb03b'
+     }
+ });
+});
+
+afterMap.on('load', () => {
+ afterMap.addLayer({
+     'id': '2018',
+     'type': 'circle',
+     'source': {
+                 type: 'vector',
+                 url: 'mapbox://justincohler.0rcj8ox1'
+     },
+     'source-layer': 'potholes2018-1wy2t2',
+     'paint': {
+         // make circles larger as the user zooms from z12 to z22
+         'circle-radius': {
+         'base': 1.75,
+         'stops': [[12, 2], [22, 180]]
+     },
+     // color circles by ethnicity, using a match expression
+     // https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-match
+     'circle-color': '#0fbb30' 
+     }
+ });
 });
 </script>
  
