@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8' />
+<title>Style circles with a data-driven property</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.css' rel='stylesheet' />
+<style>
+body { margin:0; padding:0; }
+#map { position:absolute; top:0; bottom:0; width:100%; }
+</style>
+</head>
+<body>
+ 
+<div id='map'></div>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoianVzdGluY29obGVyIiwiYSI6ImNqdmg0NXhyYjBlbGozeWxnZjl0bXJyZDIifQ.xJuUv_hfGodm7RKqtJr0EA';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/light-v10',
+    zoom: 12,
+    center: [-87.6, 41.8]
+});
+ 
+map.on('load', function () {
+ 
+    map.addLayer({
+        'id': 'justincohler.d9dgzt68',
+        'type': 'circle',
+        'source': {
+                    type: 'vector',
+                    url: 'mapbox://justincohler.d9dgzt68'
+        },
+        'source-layer': 'Pothole_tracker-d5lvyt',
+        'paint': {
+            // make circles larger as the user zooms from z12 to z22
+            'circle-radius': {
+            'base': 1.75,
+            'stops': [[12, 2], [22, 180]]
+        },
+        // color circles by ethnicity, using a match expression
+        // https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-match
+        'circle-color': [
+            'match',
+            ['get', 'status'],
+            'Completed', '#fbb03b',
+            /* other */ '#00ffff'
+            ]
+        }
+    });
+});
+</script>
+ 
+</body>
+</html>
