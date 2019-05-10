@@ -2,10 +2,11 @@
 <html>
 <head>
 <meta charset='utf-8' />
-<title>Style circles with a data-driven property</title>
+<title>Chicago Pothole Tracking</title>
 <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js'></script>
 <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.css' rel='stylesheet' />
+<link href="index.css" rel='stylesheet' />
 <style>
 body { margin:0; padding:0; }
 #map { position:absolute; top:0; bottom:0; width:100%; }
@@ -14,6 +15,13 @@ body { margin:0; padding:0; }
 <body>
  
 <div id='map'></div>
+
+<div id='console'>
+    <h1>Chicago Potholes</h1>
+    <p>Data: <a href='https://data.cityofchicago.org/Service-Requests/Pothole-tracker/gvyr-59wm'>Chicago Pothole Data (2015-Present)</p>
+</div>
+<nav id='filter-group' class='filter-group'></nav>
+ 
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoianVzdGluY29obGVyIiwiYSI6ImNqdmg0NXhyYjBlbGozeWxnZjl0bXJyZDIifQ.xJuUv_hfGodm7RKqtJr0EA';
 var map = new mapboxgl.Map({
@@ -26,13 +34,13 @@ var map = new mapboxgl.Map({
 map.on('load', function () {
  
     map.addLayer({
-        'id': 'justincohler.d9dgzt68',
+        'id': 'justincohler.3ivi0ruc',
         'type': 'circle',
         'source': {
                     type: 'vector',
-                    url: 'mapbox://justincohler.d9dgzt68'
+                    url: 'mapbox://justincohler.3ivi0ruc'
         },
-        'source-layer': 'Pothole_tracker-d5lvyt',
+        'source-layer': 'potholes-69cgjl',
         'paint': {
             // make circles larger as the user zooms from z12 to z22
             'circle-radius': {
